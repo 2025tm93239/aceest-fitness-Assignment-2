@@ -1,14 +1,14 @@
-# ACEest Fitness & Gym
+# ACEest Fitness & Gym Assignment 2
 
-**CSI ZG514 / SEZG514 — Introduction to DevOps (Assignment 1)**.
+**CSI ZG514 / SEZG514 — Introduction to DevOps (Assignment 2)**.
 
-Assignment Overview: Implementing Automated CI/CD Pipelines for ACEest Fitness & Gym
-Objective - This assignment is designed to provide students with comprehensive, hands-on experience in modern DevOps methodologies. By executing this project, students will attain professional proficiency in Version Control (Git/GitHub), Containerization (Docker), and the orchestration of Continuous Integration and Continuous Delivery (CI/CD) pipelines using GitHub Actions and Jenkins.
+**Assignment Type:** DevOps CI/CD implementation for ACEest Fitness & Gym
+
+**Assignment Context and Rationale:** In today’s technology-driven business landscape, automation, agility, and continuous delivery form the backbone of modern software engineering practices. This assignment places students in the role of a DevOps Engineer for ACEest Fitness & Gym, a dynamic fitness startup undergoing digital transformation. The organization is embracing incremental and test-driven development, aiming to streamline its end-to-end software delivery process using contemporary DevOps tools and methodologies.
+Students will simulate an industry-grade DevOps environment, implementing a fully automated Continuous Integration and Continuous Delivery (CI/CD) pipeline. The assignment emphasizes hands-on engagement with leading DevOps tools while reinforcing conceptual understanding of automation, testing, version control, and deployment strategies in real-world cloud and containerized environments.
 
 
-ACEest is a Flask REST API for gym program management: training plans, calorie estimation, client profiles, and facility metrics. The project demonstrates version control, unit testing, Docker containerization, Jenkins BUILD quality gates, and GitHub Actions CI/CD.
-
-**Git Repository:** https://github.com/2025tm93239/aceest-fitness
+**Git Repository:** https://github.com/2025tm93239/aceest-fitness-Assignment-2
 
 ---
 
@@ -94,7 +94,7 @@ python3 --version   # expected: Python 3.9.21
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/2025tm93239/aceest-fitness.git
+git clone https://github.com/2025tm93239/aceest-fitness-Assignment-2.git
 cd aceest-fitness
 ```
 
@@ -288,7 +288,7 @@ Configuration file: **`Jenkinsfile`** (Pipeline script from SCM).
 ### Jenkins job setup (summary)
 
 1. Create a **Pipeline** job (e.g. `aceest-fitness-build`).
-2. **Pipeline script from SCM** → Git → `https://github.com/2025tm93239/aceest-fitness.git`
+2. **Pipeline script from SCM** → Git → `https://github.com/2025tm93239/aceest-fitness-Assignment-2.git`
 3. Branch: `*/main` (or your integration branch).
 4. Script Path: `Jenkinsfile`
 5. Run **Build Now**.
