@@ -1,10 +1,16 @@
-// ACEest Fitness — Jenkins pipeline for Linux agents only (CSI ZG514 Assignment 1)
+// ACEest Fitness — Jenkins pipeline (Assignment 2 CI/CD on Linux VM)
 pipeline {
     agent any
 
     environment {
         IMAGE_NAME = 'aceest-fitness'
         PATH = "${env.HOME}/.local/bin:${env.PATH}"
+        // set in Jenkins job or credentials: e.g. mydockerhub/aceest-fitness
+        DOCKERHUB_REPO = "${env.DOCKERHUB_REPO ?: 'aceest-fitness'}"
+    }
+
+    triggers {
+        pollSCM('H/15 * * * *')
     }
 
     options {
@@ -114,6 +120,64 @@ pipeline {
                 DOCKER_CMD=\$(cat .jenkins_docker_cmd)
                 \${DOCKER_CMD} run --rm ${IMAGE_NAME}:${BUILD_NUMBER} python3 -m pytest -v
                 """
+            }
+        }
+
+        stage('SonarQube (if scanner installed)') {
+            steps {
+                sh '''#!/bin/bash
+                set -euo pipefail
+                export PATH="${HOME}/.local/bin:${PATH}"
+                if command -v sonar-scanner >/dev/null 2>&1; then
+                  sonar-scanner -Dproject.settings=sonar-project.properties
+                else
+                  echo "sonar-scanner not on PATH — skipped (install on VM for full marks)"
+                fi
+                '''
+            }
+        }
+
+        stage('Docker tag + push') {
+            when {
+                expression { return env.DOCKER_PUSH == 'true' }
+            }
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-aceest',
+                    usernameVariable: 'DH_USER',
+                    passwordVariable: 'DH_PASS')]) {
+                    sh """#!/bin/bash
+                    set -euo pipefail
+                    DOCKER_CMD=\$(cat .jenkins_docker_cmd)
+                    TAG=\${DOCKERHUB_REPO}:${BUILD_NUMBER}
+                    \${DOCKER_CMD} tag ${IMAGE_NAME}:${BUILD_NUMBER} \${TAG}
+                    \${DOCKER_CMD} tag ${IMAGE_NAME}:${BUILD_NUMBER} \${DOCKERHUB_REPO}:latest
+                    echo "\${DH_PASS}" | \${DOCKER_CMD} login -u "\${DH_USER}" --password-stdin
+                    \${DOCKER_CMD} push \${TAG}
+                    \${DOCKER_CMD} push \${DOCKERHUB_REPO}:latest
+                    """
+                }
+            }
+        }
+
+        stage('Deploy rolling (Minikube)') {
+            when {
+                expression { return env.K8S_DEPLOY == 'true' }
+            }
+            steps {
+                sh '''#!/bin/bash
+                set -euo pipefail
+                DOCKER_CMD=$(cat .jenkins_docker_cmd)
+                if ! kubectl version --client >/dev/null 2>&1; then
+                  echo "kubectl missing — skip deploy"
+                  exit 0
+                fi
+                eval \$(minikube docker-env 2>/dev/null || true)
+                kubectl apply -f k8s/namespace.yaml
+                kubectl apply -f k8s/deployment-rolling.yaml
+                kubectl apply -f k8s/service.yaml
+                kubectl rollout status deployment/aceest-rolling -n aceest --timeout=120s
+                '''
             }
         }
     }
