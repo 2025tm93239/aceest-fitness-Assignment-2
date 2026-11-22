@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-shadow
+  namespace: aceest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aceest-fitness
+      role: shadow
+  template:
+    metadata:
+      labels:
+        app: aceest-fitness
+        role: shadow
+    spec:
+      containers:
+        - name: web
+          image: aceest-fitness:shadow
+          ports:
+            - containerPort: 5000
+          env:
+            - name: SHADOW_TRAFFIC
+              value: "1"
