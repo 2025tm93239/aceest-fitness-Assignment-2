@@ -1,8 +1,12 @@
+import os
+
 from flask import Flask, jsonify, request
 
 from aceest.programs import GYM_METRICS, PROGRAMS
 from aceest.services import estimate_calories, list_program_names, validate_client_payload
 from aceest.storage import get_client, list_clients, save_client
+
+APP_VERSION = os.environ.get("APP_VERSION", "2.0.0")
 
 
 def create_app(testing: bool = False) -> Flask:
@@ -11,7 +15,13 @@ def create_app(testing: bool = False) -> Flask:
 
     @app.get("/")
     def health():
-        return jsonify({"service": "ACEest Fitness & Gym", "status": "ok", "version": "1.0.0"})
+        return jsonify(
+            {
+                "service": "ACEest Fitness & Gym",
+                "status": "ok",
+                "version": APP_VERSION,
+            }
+        )
 
     @app.get("/metrics")
     def metrics():
