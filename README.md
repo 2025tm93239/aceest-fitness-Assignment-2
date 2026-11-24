@@ -334,22 +334,3 @@ After each run, the workspace is cleaned (`deleteDir`) so the next build starts 
 Detailed Jenkins installation steps: [`docs/JENKINS-SETUP.md`](docs/JENKINS-SETUP.md).
 
 ---
-
-## Assignment 2 extras (Linux VM)
-
-For the full CI/CD assignment (SonarQube, Docker Hub, Minikube, deployment strategies), follow:
-
-- **[`docs/LINUX-VM-ASSIGNMENT2.md`](docs/LINUX-VM-ASSIGNMENT2.md)** — copy-paste commands for the lab VM
-- **`k8s/`** — rolling, blue-green, canary, shadow, A/B YAML
-- **`sonar-project.properties`** — Sonar scanner settings
-- **`ACEest_Fitness.py`** — same Flask entry as `app.py` (submission filename)
-- **`docs/Assignment2_Report.md`** — report template for portal upload
-
-Minikube quick start:
-
-```bash
-chmod +x scripts/minikube-deploy.sh
-./scripts/minikube-deploy.sh
-```
-
----
