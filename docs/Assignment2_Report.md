@@ -202,11 +202,6 @@ Lab VM (Rocky/Xfce) via Prayogshala RDP; workspace under `~/workspace/Assignment
 
 *Figure 29 — Run #2 after merge PR #8: **failed** — Python 3.9 not available on Ubuntu 20.04 runner (annotation); requires runner/image fix.*
 
-### 9. Lab quota extension request
-
-![Prayogshala lab extension](../Screenshots%20and%20Video/Screenshot%202026-11-24%20202952.png)
-
-*Figure 30 — DevOps lab (Docker, Git, Jenkins, SonarQube stack): **92% quota used**; extension request submitted for Assignment 2 completion.*
 
 ---
 
