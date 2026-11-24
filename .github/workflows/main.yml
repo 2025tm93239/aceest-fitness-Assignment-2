@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-lint-docker-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.9"
+          python-version: "3.11"
 
       - name: Build and Lint (compile / syntax check)
         run: |
@@ -29,4 +29,4 @@ jobs:
         run: docker build -t aceest-fitness:ci .
 
       - name: Automated Testing (pytest inside container)
-        run: docker run --rm aceest-fitness:ci pytest -v
+        run: docker run --rm aceest-fitness:ci python3 -m pytest -v
